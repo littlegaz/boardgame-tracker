@@ -24,5 +24,7 @@ public class BoardgamestableController {
         return boardgamestableService.getAllBoardgames();
     }
 
+    
+
     // Additional CRUD endpoints can be added here
 }

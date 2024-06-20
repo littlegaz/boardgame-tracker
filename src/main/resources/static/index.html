@@ -1,14 +1,34 @@
 <!-- http://localhost:8080/index.html -->
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home Page</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .grid-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Home Page!</h1>
-    <p>This is a static HTML page served by Spring Boot.</p>
-    <p>Gareth was here editing this page :P</p>
-    <p>Another testing input to confirm</p>
+    <h1>What do you fancy playing today?</h1>
+    <p>Your Boardgame choices</p>
+
+    <div class="grid-container">
+        <div th:each="boardgame : ${boardgames}" class="grid-item">
+            <h2 th:text="${boardgame.name}">Boardgame Name</h2>
+            <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
+            <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
+            <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
+            <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+        </div>
+    </div>
 </body>
 </html>
