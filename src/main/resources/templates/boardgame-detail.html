@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Boardgame Details</title>
+</head>
+<body>
+    <h1 th:text="${boardgame.name}">Boardgame Name</h1>
+    <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
+    <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
+    <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
+    <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+</body>
+</html>

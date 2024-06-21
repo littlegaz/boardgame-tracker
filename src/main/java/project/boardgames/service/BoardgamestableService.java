@@ -6,6 +6,7 @@ import project.boardgames.model.Boardgamestable;
 import project.boardgames.repository.BoardgamestableRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoardgamestableService {
@@ -23,5 +24,9 @@ public class BoardgamestableService {
 
     public void deleteById(int id) {
         boardgamestableRepository.deleteById(id);
+    }
+
+    public Optional<Boardgamestable> findById(int id) {
+        return boardgamestableRepository.findById(id);
     }
 }

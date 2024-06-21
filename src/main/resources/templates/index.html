@@ -1,10 +1,19 @@
-<!-- http://localhost:8080/index.html -->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home Page</title>
     <style>
+        .banner {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+        }
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -14,20 +23,64 @@
             border: 1px solid #ccc;
             padding: 10px;
             text-align: center;
+            cursor: pointer;
+        }
+        .filter-options {
+            border: 1px solid #ccc;
+            padding: 10px;
         }
     </style>
+    <script>
+        function goToDetail(id) {
+            window.location.href = "/boardgame/" + id;
+        }
+    </script>
 </head>
 <body>
-    <h1>What do you fancy playing today?</h1>
-    <p>Your Boardgame choices</p>
+    <div class="banner">
+        <h1>What do you fancy playing today?</h1>
+        <p>Your Boardgame choices</p>
+    </div>
 
-    <div class="grid-container">
-        <div th:each="boardgame : ${boardgames}" class="grid-item">
-            <h2 th:text="${boardgame.name}">Boardgame Name</h2>
-            <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
-            <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
-            <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
-            <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+    <div class="main-content">
+        <div class="grid-container">
+            <div th:each="boardgame : ${boardgames}" class="grid-item" th:onclick="'goToDetail(' + ${boardgame.id} + ')'">
+                <h2 th:text="${boardgame.name}">Boardgame Name</h2>
+                <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
+                <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
+                <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
+                <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+            </div>
+        </div>
+
+        <div class="filter-options">
+            <h3>Filter Options</h3>
+            <form method="GET" action="/">
+                <div>
+                    <label for="minPlayers">Min Players:</label>
+                    <input type="number" id="minPlayers" name="minPlayers">
+                </div>
+                <div>
+                    <label for="maxPlayers">Max Players:</label>
+                    <input type="number" id="maxPlayers" name="maxPlayers">
+                </div>
+                <div>
+                    <label for="time">Time (minutes):</label>
+                    <input type="number" id="time" name="time">
+                </div>
+                <div>
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty" name="difficulty">
+                        <option value="">All</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit">Filter</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>

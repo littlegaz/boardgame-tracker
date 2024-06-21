@@ -9,6 +9,7 @@ import project.boardgames.model.Boardgamestable;
 import project.boardgames.service.BoardgamestableService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class BoardgamestableController {
@@ -38,9 +39,36 @@ public class BoardgamestableController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String homePage(Model model, @RequestParam Optional<Integer> minPlayers, @RequestParam Optional<Integer> maxPlayers,
+                           @RequestParam Optional<Integer> time, @RequestParam Optional<String> difficulty) {
         List<Boardgamestable> boardgames = boardgamestableService.getAllBoardgames();
+
+        // Apply filters
+        if (minPlayers.isPresent()) {
+            boardgames = boardgames.stream().filter(bg -> bg.getMinPlayers() >= minPlayers.get()).toList();
+        }
+        if (maxPlayers.isPresent()) {
+            boardgames = boardgames.stream().filter(bg -> bg.getMaxPlayers() <= maxPlayers.get()).toList();
+        }
+        if (time.isPresent()) {
+            boardgames = boardgames.stream().filter(bg -> bg.getTime() <= time.get()).toList();
+        }
+        if (difficulty.isPresent() && !difficulty.get().isEmpty()) {
+            boardgames = boardgames.stream().filter(bg -> bg.getDifficulty().equalsIgnoreCase(difficulty.get())).toList();
+        }
+
         model.addAttribute("boardgames", boardgames);
         return "index";
+    }
+
+    @GetMapping("/boardgame/{id}")
+    public String boardgameDetail(@PathVariable int id, Model model) {
+        Optional<Boardgamestable> boardgame = boardgamestableService.findById(id);
+        if (boardgame.isPresent()) {
+            model.addAttribute("boardgame", boardgame.get());
+            return "boardgame-detail";
+        } else {
+            return "error";
+        }
     }
 }
