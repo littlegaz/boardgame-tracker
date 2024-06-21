@@ -29,6 +29,10 @@
             border: 1px solid #ccc;
             padding: 10px;
         }
+        .boardgame-image {
+            width: 100%;
+            height: auto;
+        }
     </style>
     <script>
         function goToDetail(id) {
@@ -45,6 +49,7 @@
     <div class="main-content">
         <div class="grid-container">
             <div th:each="boardgame : ${boardgames}" class="grid-item" th:onclick="'goToDetail(' + ${boardgame.id} + ')'">
+                <img th:src="${boardgame.Image}" alt="Boardgame Image" class="boardgame-image"/>
                 <h2 th:text="${boardgame.name}">Boardgame Name</h2>
                 <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
                 <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>

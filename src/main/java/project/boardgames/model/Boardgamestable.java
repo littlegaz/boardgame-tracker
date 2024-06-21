@@ -30,17 +30,21 @@ public class Boardgamestable {
     @Column(name = "Boardgame_difficulty")
     private String difficulty;
 
+    @Column(name = "Boardgame_image")
+    private String image;
+
     // No-argument constructor required by JPA
     public Boardgamestable() {
     }
 
     // Constructor with parameters
-    public Boardgamestable(String name, int minPlayers, int maxPlayers, int time, String difficulty) {
+    public Boardgamestable(String name, int minPlayers, int maxPlayers, int time, String difficulty, String image) {
         this.name = name;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.time = time;
         this.difficulty = difficulty;
+        this.image = image;
     }
 
     // Getters and setters
@@ -90,5 +94,13 @@ public class Boardgamestable {
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
