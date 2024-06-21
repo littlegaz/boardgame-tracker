@@ -24,6 +24,4 @@ public class BoardgamestableService {
     public void deleteById(int id) {
         boardgamestableRepository.deleteById(id);
     }
-
-    // Additional methods for CRUD operations can be added here
 }
