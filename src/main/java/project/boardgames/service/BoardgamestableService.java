@@ -21,5 +21,9 @@ public class BoardgamestableService {
         return boardgamestableRepository.findAll();
     }
 
+    public void deleteById(int id) {
+        boardgamestableRepository.deleteById(id);
+    }
+
     // Additional methods for CRUD operations can be added here
 }
