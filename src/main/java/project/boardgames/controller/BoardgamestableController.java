@@ -40,20 +40,15 @@ public class BoardgamestableController {
 
     @GetMapping("/")
     public String homePage(Model model,
-                           @RequestParam Optional<String> minPlayers,
-                           @RequestParam Optional<String> maxPlayers,
+                           @RequestParam Optional<String> numPlayers,
                            @RequestParam Optional<String> time,
                            @RequestParam Optional<String> difficulty) {
         List<Boardgamestable> boardgames = boardgamestableService.getAllBoardgames();
 
         // Apply filters
-        if (minPlayers.isPresent() && !minPlayers.get().isEmpty()) {
-            int minPlayersInt = Integer.parseInt(minPlayers.get());
-            boardgames = boardgames.stream().filter(bg -> bg.getMinPlayers() >= minPlayersInt).toList();
-        }
-        if (maxPlayers.isPresent() && !maxPlayers.get().isEmpty()) {
-            int maxPlayersInt = Integer.parseInt(maxPlayers.get());
-            boardgames = boardgames.stream().filter(bg -> bg.getMaxPlayers() <= maxPlayersInt).toList();
+        if (numPlayers.isPresent() && !numPlayers.get().isEmpty()) {
+            int numPlayersInt = Integer.parseInt(numPlayers.get());
+            boardgames = boardgames.stream().filter(bg -> bg.getMinPlayers() <= numPlayersInt && bg.getMaxPlayers() >= numPlayersInt).toList();
         }
         if (time.isPresent() && !time.get().isEmpty()) {
             switch (time.get()) {
