@@ -39,19 +39,34 @@ public class BoardgamestableController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model, @RequestParam Optional<Integer> minPlayers, @RequestParam Optional<Integer> maxPlayers,
-                           @RequestParam Optional<Integer> time, @RequestParam Optional<String> difficulty) {
+    public String homePage(Model model,
+                           @RequestParam Optional<String> minPlayers,
+                           @RequestParam Optional<String> maxPlayers,
+                           @RequestParam Optional<String> time,
+                           @RequestParam Optional<String> difficulty) {
         List<Boardgamestable> boardgames = boardgamestableService.getAllBoardgames();
 
         // Apply filters
-        if (minPlayers.isPresent()) {
-            boardgames = boardgames.stream().filter(bg -> bg.getMinPlayers() >= minPlayers.get()).toList();
+        if (minPlayers.isPresent() && !minPlayers.get().isEmpty()) {
+            int minPlayersInt = Integer.parseInt(minPlayers.get());
+            boardgames = boardgames.stream().filter(bg -> bg.getMinPlayers() >= minPlayersInt).toList();
         }
-        if (maxPlayers.isPresent()) {
-            boardgames = boardgames.stream().filter(bg -> bg.getMaxPlayers() <= maxPlayers.get()).toList();
+        if (maxPlayers.isPresent() && !maxPlayers.get().isEmpty()) {
+            int maxPlayersInt = Integer.parseInt(maxPlayers.get());
+            boardgames = boardgames.stream().filter(bg -> bg.getMaxPlayers() <= maxPlayersInt).toList();
         }
-        if (time.isPresent()) {
-            boardgames = boardgames.stream().filter(bg -> bg.getTime() <= time.get()).toList();
+        if (time.isPresent() && !time.get().isEmpty()) {
+            switch (time.get()) {
+                case "Under 30 Minutes":
+                    boardgames = boardgames.stream().filter(bg -> bg.getTime() < 30).toList();
+                    break;
+                case "Under 60 Minutes":
+                    boardgames = boardgames.stream().filter(bg -> bg.getTime() < 60).toList();
+                    break;
+                case "Over 60 Minutes":
+                    boardgames = boardgames.stream().filter(bg -> bg.getTime() >= 60).toList();
+                    break;
+            }
         }
         if (difficulty.isPresent() && !difficulty.get().isEmpty()) {
             boardgames = boardgames.stream().filter(bg -> bg.getDifficulty().equalsIgnoreCase(difficulty.get())).toList();
