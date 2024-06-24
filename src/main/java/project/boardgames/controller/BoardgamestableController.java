@@ -28,11 +28,12 @@ public class BoardgamestableController {
         return boardgamestableService.getAllBoardgames();
     }
 
-    @PutMapping("/api/boardgames/update/{id}")
-    public @ResponseBody Boardgamestable updateBoardgame(@PathVariable int id, @RequestBody Boardgamestable updatedBoardgame) {
-        updatedBoardgame.setId(id);
-        return boardgamestableService.save(updatedBoardgame);
-    }
+    @PostMapping("/api/boardgames/update/{id}")
+    public String updateBoardgame(@PathVariable int id, @ModelAttribute Boardgamestable updatedBoardgame) {
+    updatedBoardgame.setId(id);
+    boardgamestableService.save(updatedBoardgame);
+    return "redirect:/boardgame/" + id;
+}
 
     @DeleteMapping("/api/boardgames/delete/{id}")
     public @ResponseBody void deleteBoardgame(@PathVariable int id) {
