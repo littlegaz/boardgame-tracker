@@ -2,12 +2,69 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Boardgame Details</title>
+    <style>
+        .banner {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 50px;
+        }
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            margin-left: 20%;
+            margin-right: 20%;
+            background-color: #f8f8f8;
+        }
+        .boardgame-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 25px;
+            object-fit: cover;
+            padding: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .left-side {
+            flex: 1;
+            text-align: center;
+            
+        }
+        .right-side {
+            flex: 1;
+            
+        }
+        .details {
+            padding: 20px;
+            
+        }
+
+    </style>
 </head>
 <body>
-    <h1 th:text="${boardgame.name}">Boardgame Name</h1>
-    <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
-    <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
-    <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
-    <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+    <div class="banner">
+        <h1 th:text="${boardgame.name}">Boardgame Name</h1>
+    </div>
+    <div class="main-content">
+        <div class="left-side">
+            <img th:src="${boardgame.Image}" alt="Boardgame Image" class="boardgame-image"/>
+        </div>
+        <div class="right-side">
+            <div class="details">
+                <h2>Boardgame Details</h2>
+            <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
+            <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
+            <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
+            <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+            </div>
+        </div>
+    </div>
+
+    
 </body>
 </html>
