@@ -50,6 +50,9 @@
     <div class="banner">
         <h1 th:text="${boardgame.name}">Boardgame Name</h1>
     </div>
+
+    <button onclick="history.back()" class="back-button">Back</button>
+
     <div class="main-content">
         <div class="left-side">
             <img th:src="${boardgame.Image}" alt="Boardgame Image" class="boardgame-image"/>
