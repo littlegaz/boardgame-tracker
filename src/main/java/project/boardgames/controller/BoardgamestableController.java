@@ -18,8 +18,9 @@ public class BoardgamestableController {
     private BoardgamestableService boardgamestableService;
 
     @PostMapping("/api/boardgames/add")
-    public @ResponseBody Boardgamestable addBoardgame(@RequestBody Boardgamestable boardgamestable) {
-        return boardgamestableService.save(boardgamestable);
+    public String addBoardgame(@ModelAttribute Boardgamestable boardgamestable) {
+        boardgamestableService.save(boardgamestable);
+        return "redirect:/";
     }
 
     @GetMapping("/api/boardgames/all")
