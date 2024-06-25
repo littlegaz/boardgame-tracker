@@ -1,10 +1,11 @@
 package project.boardgames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import project.boardgames.model.Boardgamestable;
 import project.boardgames.service.BoardgamestableService;
 
@@ -20,7 +21,7 @@ public class BoardgamestableController {
     @PostMapping("/api/boardgames/add")
     public String addBoardgame(@ModelAttribute Boardgamestable boardgamestable) {
         boardgamestableService.save(boardgamestable);
-        return "redirect:/";
+        return "redirect:/?successMessage=" + boardgamestable.getName() + " has been added successfully!";
     }
 
     @GetMapping("/api/boardgames/all")
@@ -30,21 +31,27 @@ public class BoardgamestableController {
 
     @PostMapping("/api/boardgames/update/{id}")
     public String updateBoardgame(@PathVariable int id, @ModelAttribute Boardgamestable updatedBoardgame) {
-    updatedBoardgame.setId(id);
-    boardgamestableService.save(updatedBoardgame);
-    return "redirect:/boardgame/" + id;
-}
+        updatedBoardgame.setId(id);
+        boardgamestableService.save(updatedBoardgame);
+        return "redirect:/boardgame/" + id + "?successMessage=" + updatedBoardgame.getName() + " has been updated successfully!";
+    }
 
     @DeleteMapping("/api/boardgames/delete/{id}")
-    public @ResponseBody void deleteBoardgame(@PathVariable int id) {
-        boardgamestableService.deleteById(id);
+    public ResponseEntity<Void> deleteBoardgame(@PathVariable int id) {
+        if (boardgamestableService.findById(id).isPresent()) {
+            boardgamestableService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/")
     public String homePage(Model model,
                            @RequestParam Optional<String> numPlayers,
                            @RequestParam Optional<String> time,
-                           @RequestParam Optional<String> difficulty) {
+                           @RequestParam Optional<String> difficulty,
+                           @RequestParam Optional<String> successMessage) {
         List<Boardgamestable> boardgames = boardgamestableService.getAllBoardgames();
 
         // Apply filters
@@ -70,6 +77,7 @@ public class BoardgamestableController {
         }
 
         model.addAttribute("boardgames", boardgames);
+        successMessage.ifPresent(msg -> model.addAttribute("successMessage", msg));
         return "index";
     }
 

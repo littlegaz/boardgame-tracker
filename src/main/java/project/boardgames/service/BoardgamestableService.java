@@ -23,7 +23,9 @@ public class BoardgamestableService {
     }
 
     public void deleteById(int id) {
-        boardgamestableRepository.deleteById(id);
+        if (boardgamestableRepository.existsById(id)) {
+            boardgamestableRepository.deleteById(id);
+        }
     }
 
     public Optional<Boardgamestable> findById(int id) {

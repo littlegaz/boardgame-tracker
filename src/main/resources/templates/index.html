@@ -58,19 +58,35 @@
         function goToDetail(id) {
             window.location.href = "/boardgame/" + id;
         }
+
+        function hideMessage() {
+            const messageDiv = document.getElementById('successMessage');
+            if (messageDiv) {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                    // Remove the query parameters from the URL
+                    const url = new URL(window.location);
+                    url.searchParams.delete('successMessage');
+                    window.history.replaceState({}, document.title, url.pathname);
+                }, 10000);
+            }
+        }
+
+        window.onload = hideMessage;
     </script>
 </head>
 <body>
     <div class="banner">
         <h1>What do you fancy playing today?</h1>
         <p>Your Boardgame choices</p>
+        <div id="successMessage" th:if="${successMessage}" th:text="${successMessage}" style="color: green;"></div>
     </div>
 
     <div class="main-content">
         <div class="grid-container">
             <div th:each="boardgame : ${boardgames}" class="grid-item" th:onclick="'goToDetail(' + ${boardgame.id} + ')'">
                 <h2 th:text="${boardgame.name}">Boardgame Name</h2>
-                <img th:src="${boardgame.Image}" alt="Boardgame Image" class="boardgame-image"/>
+                <img th:src="${boardgame.image}" alt="Boardgame Image" class="boardgame-image"/>
                 <!-- <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
                 <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
                 <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
@@ -147,68 +163,6 @@
                     </div>
                 </form>
             </div>
-
-            <!-- <div class="form-section">
-                <h3>Update Game</h3>
-                <form method="POST" action="/api/boardgames/update">
-                    <div>
-                        <label for="id">Game ID:</label>
-                        <input type="number" id="id" name="id" required>
-                    </div>
-                    <div>
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div>
-                        <label for="minPlayers">Min Players:</label>
-                        <input type="number" id="minPlayers" name="minPlayers" required>
-                    </div>
-                    <div>
-                        <label for="maxPlayers">Max Players:</label>
-                        <input type="number" id="maxPlayers" name="maxPlayers" required>
-                    </div>
-                    <div>
-                        <label for="time">Time (minutes):</label>
-                        <input type="number" id="time" name="time" required>
-                    </div>
-                    <div>
-                        <label for="difficulty">Difficulty:</label>
-                        <select id="difficulty" name="difficulty" required>
-                            <option value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="boardgameImage">Image URL:</label>
-                        <input type="text" id="boardgameImage" name="boardgameImage" required>
-                    </div>
-                    <div>
-                        <label for="description">Description:</label>
-                        <textarea id="description" name="description" required></textarea>
-                    </div>
-                    <div>
-                        <button type="submit">Update Game</button>
-                    </div>
-                </form>
-            </div> -->
-
-            <!-- <div class="form-section">
-                <h3>Delete Game</h3>
-                <form method="POST" action="/api/boardgames/delete">
-                    <div>
-                        <label for="id">Game ID:</label>
-                        <input type="number" id="id" name="id" required>
-                    </div>
-                    <div>
-                        <button type="submit">Delete Game</button>
-                    </div>
-                </form>
-            </div> -->
-        </div>
-    </div>
-</body>
-</html>
         </div>
     </div>
 </body>
