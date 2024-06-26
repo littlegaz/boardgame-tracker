@@ -94,6 +94,21 @@
         </div>
 
         <div class="filter-options">
+
+            <div class="form-section">
+                <h3>Search by Name</h3>
+                <form method="GET" action="/">
+                    <div>
+                        <label for="searchName">Boardgame Name:</label>
+                        <input type="text" id="searchName" name="searchName">
+                    </div>
+                    <div>
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+            <br><br><br>
+            
             <h3>Filter Options</h3>
             <form method="GET" action="/">
                 <div>
@@ -122,6 +137,7 @@
                     <button type="submit">Filter</button>
                 </div>
             </form>
+            <br><br><br>
             <div class="form-section">
                 <h3>Add Game</h3>
                 <form method="POST" action="/api/boardgames/add">

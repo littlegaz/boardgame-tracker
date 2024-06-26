@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.boardgames.model.Boardgamestable;
+import project.boardgames.model.BoardgameScore;
 import project.boardgames.service.BoardgamestableService;
+import project.boardgames.service.BoardgameScoreService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,9 @@ public class BoardgamestableController {
 
     @Autowired
     private BoardgamestableService boardgamestableService;
+
+    @Autowired
+    private BoardgameScoreService boardgameScoreService;
 
     @PostMapping("/api/boardgames/add")
     public String addBoardgame(@ModelAttribute Boardgamestable boardgamestable) {
@@ -85,10 +90,28 @@ public class BoardgamestableController {
     public String boardgameDetail(@PathVariable int id, Model model) {
         Optional<Boardgamestable> boardgame = boardgamestableService.findById(id);
         if (boardgame.isPresent()) {
+            List<BoardgameScore> scores = boardgameScoreService.getScoresByBoardgameId(id);
+            int highestScore = boardgameScoreService.getHighestScore(id);
+            double averageScore = boardgameScoreService.getAverageScore(id);
+
             model.addAttribute("boardgame", boardgame.get());
+            model.addAttribute("scores", scores);
+            model.addAttribute("highestScore", highestScore);
+            model.addAttribute("averageScore", String.format("%.2f", averageScore));
+
             return "boardgame-detail";
         } else {
             return "error";
         }
+    }
+
+    @PostMapping("/api/boardgames/{id}/score")
+    public String addScore(@PathVariable int id, @RequestParam String playerName, @RequestParam int score) {
+        Optional<Boardgamestable> boardgame = boardgamestableService.findById(id);
+        if (boardgame.isPresent()) {
+            BoardgameScore boardgameScore = new BoardgameScore(boardgame.get(), playerName, score);
+            boardgameScoreService.save(boardgameScore);
+        }
+        return "redirect:/boardgame/" + id;
     }
 }

@@ -89,6 +89,17 @@
                 });
             }
         }
+        function toggleScores() {
+            const scoreList = document.getElementById('scoreList');
+            const viewScoresButton = document.getElementById('viewScoresButton');
+            if (scoreList.style.display === 'none' || scoreList.style.display === '') {
+                scoreList.style.display = 'block';
+                viewScoresButton.textContent = 'Hide Scores';
+            } else {
+                scoreList.style.display = 'none';
+                viewScoresButton.textContent = 'View Scores';
+            }
+        }
     </script>
 </head>
 <body>
@@ -105,10 +116,43 @@
         <div class="right-side">
             <div class="details">
                 <h2>Boardgame Details</h2>
-            <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
-            <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
-            <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
-            <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+                <p>Min Players: <span th:text="${boardgame.minPlayers}">0</span></p>
+                <p>Max Players: <span th:text="${boardgame.maxPlayers}">0</span></p>
+                <p>Time: <span th:text="${boardgame.time}">0</span> minutes</p>
+                <p>Difficulty: <span th:text="${boardgame.difficulty}">Easy</span></p>
+
+                <h2>Scores</h2>
+                <p>Highest Score: <span th:text="${highestScore}">0</span></p>
+                <p>Average Score: <span th:text="${averageScore}">0.0</span></p>
+
+                <div>
+                    <h3>Add Score</h3>
+                    <form class="score-form" method="POST" th:action="@{/api/boardgames/{id}/score(id=${boardgame.id})}">
+                        <div>
+                            <label for="playerName">Player Name:</label>
+                            <input type="text" id="playerName" name="playerName" required>
+                        </div>
+                        <div>
+                            <label for="score">Score:</label>
+                            <input type="number" id="score" name="score" required>
+                        </div>
+                        <div>
+                            <button type="submit">Add Score</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Score List</h3>
+                    <button id="viewScoresButton" onclick="toggleScores()">View Scores</button>
+                    <ul id="scoreList" style="display: none;">
+                        <li th:each="score : ${scores}">
+                            <span th:text="${score.playerName}">Player Name</span>: 
+                            <span th:text="${score.score}">0</span> on 
+                            <span th:text="${#temporals.format(score.scoreDate, 'yyyy-MM-dd')}">Date</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
