@@ -22,10 +22,12 @@ public class BoardgamestableService {
         return boardgamestableRepository.findAll();
     }
 
+    public List<Boardgamestable> findByNameContaining(String name) {
+        return boardgamestableRepository.findByNameContainingIgnoreCase(name);
+    }
+
     public void deleteById(int id) {
-        if (boardgamestableRepository.existsById(id)) {
-            boardgamestableRepository.deleteById(id);
-        }
+        boardgamestableRepository.deleteById(id);
     }
 
     public Optional<Boardgamestable> findById(int id) {
