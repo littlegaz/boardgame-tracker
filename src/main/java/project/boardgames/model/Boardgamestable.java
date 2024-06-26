@@ -1,14 +1,14 @@
-package project.boardgames.model;
+package project.boardgames.model; /* specifies where the class belongs*/
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.Column; /* specifies the mapping of a column in the database to a field in the entity*/
+import jakarta.persistence.Entity; /* marks the class as a jpa entity meaning it will be mapped to a database*/
+import jakarta.persistence.GeneratedValue; /* this specifies that the primary key should be generated automatically by the database*/
+import jakarta.persistence.GenerationType; 
+import jakarta.persistence.Id; /* this marks the primary key*/
+import jakarta.persistence.Table; /* specifies the name of the database table to which this entity is mapped*/
 
-@Entity
-@Table(name = "Boardgamestable")
+@Entity /* indicates that this class is a JPA entity */
+@Table(name = "Boardgamestable") /* specifies the name of the database being used */
 public class Boardgamestable {
     
     @Id
@@ -32,12 +32,14 @@ public class Boardgamestable {
 
     @Column(name = "Boardgame_image")
     private String image;
+    /* these relate to each column in the database table */
+
 
     // No-argument constructor required by JPA
     public Boardgamestable() {
     }
 
-    // Constructor with parameters
+    // Constructor with parameters which initialises all fields of the entity
     public Boardgamestable(String name, int minPlayers, int maxPlayers, int time, String difficulty, String image) {
         this.name = name;
         this.minPlayers = minPlayers;
@@ -47,7 +49,9 @@ public class Boardgamestable {
         this.image = image;
     }
 
-    // Getters and setters
+    // Getters and setters for all fields 
+    // The getters retrieve values
+    // The setters set values
     public int getId() {
         return id;
     }
